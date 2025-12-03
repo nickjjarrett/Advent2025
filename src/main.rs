@@ -1,8 +1,7 @@
 use std::fs;
-
 mod day2;
 
-pub fn day1()
+fn day1()
 {
     let file = fs::read_to_string("src/data.txt")
         .expect("Should have been able to read the file");
@@ -14,14 +13,21 @@ pub fn day1()
  
     for line in split{
         let instr = line.split_at(1);
-        let clicks = instr.1.trim().parse::<i16>().unwrap() ;
+        let clicks = instr.1.trim().parse::<i16>().unwrap();
         _prev = number;
         
         // Increment full rotations
         code += clicks/100;
  
         // Increment / decrement value
-        if instr.0 == "L" {number -= clicks % 100}else{number += clicks%100}
+        if instr.0 == "L" 
+        {
+            number -= clicks % 100
+        }
+        else 
+        {
+            number += clicks%100
+        }
        
         // +ve -> -ve crossover point e.g. 5 -> -9
         if (number.is_positive() && _prev.is_negative()) || (_prev.is_positive() && number.is_negative())

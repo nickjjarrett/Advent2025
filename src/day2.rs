@@ -1,12 +1,13 @@
+use core::num;
 use std::fs;
 
 pub fn part1() {
-    let file = fs::read_to_string("src/data2.txt")
+    let data_path = "src/testdata2.txt";
+    // let data_path = "src/data2.txt";
+    let file = fs::read_to_string(data_path)
         .expect("Should have been able to read the file");
 
-    let mut data: Vec<&str> = file.split(',').collect();
-    let mut case_a: bool = false;
-    let mut case_b: bool = false;
+    let data: Vec<&str> = file.split(',').collect();
 
     // split the ranges that straddle different orders of magnitude
     // 95 - 115
@@ -28,113 +29,152 @@ pub fn part1() {
             let new_d = vals[1].to_string();
             // println!("{} {}", new_a, new_b);
             // println!("{} {}", new_c, new_d);
-            if vals[0].len() %2 == 0
-            {
-                nice_data.push((new_a, new_b));
-            }
-            else if vals[1].len() %2 == 0
-            {
-                nice_data.push((new_c, new_d));
-            }
+            nice_data.push((new_a, new_b));
+            nice_data.push((new_c, new_d));
         }  
         else {
-
-            if vals[0].len() % 2 == 0{
-                nice_data.push((vals[0].to_string(), vals[1].to_string()));
-            }
+            nice_data.push((vals[0].to_string(), vals[1].to_string()));
         }
     }
 
     let mut total: i64 = 0;
 
     for pairs in nice_data{
-
-        let mut num_ = 0;
-        let start = pairs.0.split_at(pairs.0.len()/2);
-        let end = pairs.1.split_at(pairs.1.len()/2);
-
-        let start_a = start.0.parse::<i64>().unwrap();
-        let start_b = start.1.parse::<i64>().unwrap();
-        let end_a = end.0.parse::<i64>().unwrap();
-        let end_b = end.1.parse::<i64>().unwrap();
-        let mut first = 0;
-
-        if start_a >= start_b
-
-        {
-            // first instance = start_a start_a e.g. 21 gives 22
-            first = start_a;
-            num_ += 1;
-        }
-        else {
-            // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
-            first = start_a as i64 + 1;
-        }
-        if end_a <= end_b
-        {
-            num_ += 1;
-        }
-        num_ += end_a - start_a - 1;
-
-        // print!("{} {} - ", start_a, start_b);
-        // println!("{} {}", end_a, end_b);
-        // println!("Num invalid IDs: {}", num_);
-
-        // let base: i64 = 10;
+        println!("{}-{}", pairs.0, pairs.1);
 
         let exp =  pairs.0.len() as u32;
-        // let min: i64 = 10i64.pow(exp-1) + 10i64.pow((exp/2) - 1);
-        // let increment: i64 = base.pow(exp/2) + 1;
         let increment: i64 = 10i64.pow(exp/2) + 1;
-        // println!("min {}  increment {} first {}", min, increment, first);
-        // println!("sum {}", summate(min, first, increment, num_));
+        let first: &mut i64 = &mut 0;
 
-        total += summate(first, increment, num_);
+        // Find what can divide by 
+        // 2 -> 2
+        // 3 -> 3
+        // 4 -> 4, 2
+        // 5 -> 5
+        // 6 -> 6, 3, 2
+        // 7 -> 7
+        for i in 2..pairs.0.len()+1
+        {
+            *first = 0;
+            if pairs.0.len() % i == 0
+            {
+                println!("Divisor: {i}");
+                let num = split_nums(i, first, pairs.clone());
+                total += summate(*first, increment, num);
+            }
+        }        
+        // println!(" increment {} first {}", increment, first);
 
     }
 
     println!("Total: {}", total);
-
 }
 
 
-// /// Split the numbers into x parts
-// /// 
-// fn splitNums(div: i8)
+fn split_into(number: String, sections: usize) -> Vec<String>
+{
+    // number.spli
+    let mut new_string: Vec<String> = vec![];
+    let mut temp: String = number.clone();
+
+    // Split into sections, section length = len string / sections
+    let section_len = number.len()/sections;
+    println!("section Len {section_len}");
+
+    for _ in 0..sections - 1
+    {
+        let blah = temp.split_at(section_len);
+        new_string.push(blah.0.to_string());
+        
+        temp = blah.1.to_string();
+        // println!("{} and {}", blah.0, temp);
+    }
+
+    println!("temp {temp} ");
+    new_string.push(temp.to_string());
+    
+    return new_string;
+}
+
+
+// fn split_into(number: String, sections: usize) -> String
 // {
-//     for pairs in nice_data{
+//     let mut new_string: Vec<String> = vec![];
 
-//         let mut num_ = 0;
-//         let start = pairs.0.split_at(pairs.0.len()/2);
-//         let end = pairs.1.split_at(pairs.1.len()/2);
+//     let mut temp: String = number.clone();
 
-//         let start_a = start.0.parse::<i64>().unwrap();
-//         let start_b = start.1.parse::<i64>().unwrap();
-//         let end_a = end.0.parse::<i64>().unwrap();
-//         let end_b = end.1.parse::<i64>().unwrap();
-//         let mut first = 0;
+//     // Split into sections, section length = len string / sections
+//     let section_len = number.len()/sections;
+//     println!("section Len {section_len}");
 
-//         if start_a >= start_b
-//         {
-//             // first instance = start_a start_a e.g. 21 gives 22
-//             first = start_a;
-//             num_ += 1;
-//         }
-//         else {
-//             // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
-//             first = start_a as i64 + 1;
-//         }
-//         if end_a <= end_b
-//         {
-//             num_ += 1;
-//         }
-//         num_ += end_a - start_a - 1;
+//     let blah = temp.split_at(section_len);
+//     new_string.push(blah.0.to_string());
+    
+//     // temp = blah.1.to_string();
+//     println!("{} and {}", blah.0, temp);
 
-//         // print!("{} {} - ", start_a, start_b);
-//         // println!("{} {}", end_a, end_b);
-//         // println!("Num invalid IDs: {}", num_);
-//     }
+//     println!("temp {temp} ");
+//     new_string.push(temp.to_string());
+
+//     // if
+    
+//     return blah.1.to_string();
 // }
+
+
+
+
+
+
+
+/// Split the numbers into x parts
+/// 
+fn split_nums(div: usize, first: &mut i64, pairs: (String, String)) -> i64
+{
+    let mut num_ = 0;
+    // for pairs in nice_data{
+    let splits_1 = split_into(pairs.0.clone(), div);
+    
+    for i in splits_1{
+        print!("{i} ");
+    }
+    println!("");
+    
+    let splits_2 = split_into(pairs.1.clone(), div);
+    for i in splits_2{
+        print!("{i} ");
+    }
+    println!("");
+
+    let start = pairs.0.split_at(pairs.0.len()/div);
+    let end = pairs.1.split_at(pairs.1.len()/div);
+
+    let start_a = start.0.parse::<i64>().unwrap();
+    let start_b = start.1.parse::<i64>().unwrap();
+    let end_a = end.0.parse::<i64>().unwrap();
+    let end_b = end.1.parse::<i64>().unwrap();
+
+    // print!("{} {} - ", start_a, start_b);
+    // println!("{} {}", end_a, end_b);
+    // let mut first = 0;
+
+    if start_a >= start_b{
+        // first instance = start_a start_a e.g. 21 gives 22
+        *first = start_a;
+        num_ += 1;
+    }
+    else {
+        // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
+        *first = start_a as i64 + 1;
+    }
+
+    if end_a <= end_b{
+        num_ += 1;
+    }
+
+    num_ += end_a - start_a - 1;
+    return num_;
+}
 
 
 fn summate(first: i64, increment: i64, num: i64) -> i64
@@ -143,12 +183,10 @@ fn summate(first: i64, increment: i64, num: i64) -> i64
     for i in 0..num
     {
         val += increment + increment * (first - 1 + i);
-        // println!("{}", increment + increment * (first - 1 + i))
-
+        // println!("{}", increment + increment * (first - 1 + i));
     }
     // println!("Val: {}", val);
     return val;
-
 }
 
 /*
@@ -161,9 +199,9 @@ If it is included, need to know so we can negate it after the fact
 As the other methods will pick that up as an invalid ID as well
 
 increments will be (for above case)
- - 111111
- - 10101
- - 1001
+- 111111
+- 10101
+- 1001
 use a set to bring together all invalid IDs, so duplicates won't matter
 
 */
