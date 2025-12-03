@@ -40,7 +40,7 @@ pub fn part1() {
     let mut total: i64 = 0;
 
     for pairs in nice_data{
-        println!("{}-{}", pairs.0, pairs.1);
+        println!("\n{}-{}", pairs.0, pairs.1);
 
         let exp =  pairs.0.len() as u32;
         let increment: i64 = 10i64.pow(exp/2) + 1;
@@ -58,8 +58,9 @@ pub fn part1() {
             *first = 0;
             if pairs.0.len() % i == 0
             {
-                println!("Divisor: {i}");
+                println!("\nDivisor: {i}");
                 let num = split_nums(i, first, pairs.clone());
+                println!("num: {num}");
                 total += summate(*first, increment, num);
             }
         }        
@@ -73,13 +74,13 @@ pub fn part1() {
 
 fn split_into(number: String, sections: usize) -> Vec<String>
 {
-    // number.spli
     let mut new_string: Vec<String> = vec![];
+
     let mut temp: String = number.clone();
 
     // Split into sections, section length = len string / sections
     let section_len = number.len()/sections;
-    println!("section Len {section_len}");
+    // println!("section Len {section_len}");
 
     for _ in 0..sections - 1
     {
@@ -87,43 +88,11 @@ fn split_into(number: String, sections: usize) -> Vec<String>
         new_string.push(blah.0.to_string());
         
         temp = blah.1.to_string();
-        // println!("{} and {}", blah.0, temp);
     }
-
-    println!("temp {temp} ");
     new_string.push(temp.to_string());
     
     return new_string;
 }
-
-
-// fn split_into(number: String, sections: usize) -> String
-// {
-//     let mut new_string: Vec<String> = vec![];
-
-//     let mut temp: String = number.clone();
-
-//     // Split into sections, section length = len string / sections
-//     let section_len = number.len()/sections;
-//     println!("section Len {section_len}");
-
-//     let blah = temp.split_at(section_len);
-//     new_string.push(blah.0.to_string());
-    
-//     // temp = blah.1.to_string();
-//     println!("{} and {}", blah.0, temp);
-
-//     println!("temp {temp} ");
-//     new_string.push(temp.to_string());
-
-//     // if
-    
-//     return blah.1.to_string();
-// }
-
-
-
-
 
 
 
@@ -133,46 +102,74 @@ fn split_nums(div: usize, first: &mut i64, pairs: (String, String)) -> i64
 {
     let mut num_ = 0;
     // for pairs in nice_data{
-    let splits_1 = split_into(pairs.0.clone(), div);
+    let splits_1: Vec<String> = split_into(pairs.0.clone(), div);
     
-    for i in splits_1{
-        print!("{i} ");
-    }
-    println!("");
+    // for i in splits_1{
+    //     print!("{i} ");
+    // }
+    // println!("");
     
     let splits_2 = split_into(pairs.1.clone(), div);
-    for i in splits_2{
-        print!("{i} ");
-    }
+    // for i in splits_2{
+    //     print!("{i} ");
+    // }
     println!("");
 
-    let start = pairs.0.split_at(pairs.0.len()/div);
-    let end = pairs.1.split_at(pairs.1.len()/div);
+    let start = splits_1[0].parse::<i64>().unwrap();
+    let end = splits_2[0].parse::<i64>().unwrap();
 
-    let start_a = start.0.parse::<i64>().unwrap();
-    let start_b = start.1.parse::<i64>().unwrap();
-    let end_a = end.0.parse::<i64>().unwrap();
-    let end_b = end.1.parse::<i64>().unwrap();
+    *first = start as i64;
+    num_ = 2;
+    for i in 1..splits_1.len()
+    {
+        println!("start i {}", splits_1[i]);
+        if start < splits_1[i].parse::<i64>().unwrap()
+        {
+            *first = start as i64 + 1;
+            num_ -= 1;
+            break;
+        }
+    }
+
+    for i in 1..splits_2.len()
+    {
+        println!("end i {}", splits_2[i]);
+        if end > splits_2[i].parse::<i64>().unwrap()
+        {
+            num_ -= 1;
+            break;
+        }
+    }
+
+    num_ += end - start - 1;
+    if num_ < 0{
+        num_ = 0;
+    }
+
+    // let start_a = start.0.parse::<i64>().unwrap();
+    // let start_b = start.1.parse::<i64>().unwrap();
+    // let end_a = end.0.parse::<i64>().unwrap();
+    // let end_b = end.1.parse::<i64>().unwrap();
 
     // print!("{} {} - ", start_a, start_b);
     // println!("{} {}", end_a, end_b);
     // let mut first = 0;
+    
+    // if start_a >= start_b{
+    //     // first instance = start_a start_a e.g. 21 gives 22
+    //     *first = start_a;
+    //     num_ += 1;
+    // }
+    // else {
+    //     // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
+    //     *first = start_a as i64 + 1;
+    // }
 
-    if start_a >= start_b{
-        // first instance = start_a start_a e.g. 21 gives 22
-        *first = start_a;
-        num_ += 1;
-    }
-    else {
-        // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
-        *first = start_a as i64 + 1;
-    }
+    // if end_a <= end_b{
+    //     num_ += 1;
+    // }
 
-    if end_a <= end_b{
-        num_ += 1;
-    }
-
-    num_ += end_a - start_a - 1;
+    // num_ += end_a - start_a - 1;
     return num_;
 }
 
