@@ -2,8 +2,8 @@ use core::num;
 use std::fs;
 
 pub fn part1() {
-    let data_path = "src/testdata2.txt";
-    // let data_path = "src/data2.txt";
+    // let data_path = "src/testdata2.txt";
+    let data_path = "src/data2.txt";
     let file = fs::read_to_string(data_path)
         .expect("Should have been able to read the file");
 
@@ -46,13 +46,6 @@ pub fn part1() {
         let increment: i64 = 10i64.pow(exp/2) + 1;
         let first: &mut i64 = &mut 0;
 
-        // Find what can divide by 
-        // 2 -> 2
-        // 3 -> 3
-        // 4 -> 4, 2
-        // 5 -> 5
-        // 6 -> 6, 3, 2
-        // 7 -> 7
         for i in 2..pairs.0.len()+1
         {
             *first = 0;
@@ -115,61 +108,63 @@ fn split_nums(div: usize, first: &mut i64, pairs: (String, String)) -> i64
     // }
     println!("");
 
-    let start = splits_1[0].parse::<i64>().unwrap();
-    let end = splits_2[0].parse::<i64>().unwrap();
+    // let start = splits_1[0].parse::<i64>().unwrap();
+    // let end = splits_2[0].parse::<i64>().unwrap();
 
-    *first = start as i64;
-    num_ = 2;
-    for i in 1..splits_1.len()
-    {
-        println!("start i {}", splits_1[i]);
-        if start < splits_1[i].parse::<i64>().unwrap()
-        {
-            *first = start as i64 + 1;
-            num_ -= 1;
-            break;
-        }
-    }
+    // *first = start as i64;
+    // num_ = 2;
+    // for i in 1..splits_1.len()
+    // {
+    //     println!("start i {}", splits_1[i]);
+    //     if start < splits_1[i].parse::<i64>().unwrap()
+    //     {
+    //         *first = start as i64 + 1;
+    //         num_ -= 1;
+    //         break;
+    //     }
+    // }
 
-    for i in 1..splits_2.len()
-    {
-        println!("end i {}", splits_2[i]);
-        if end > splits_2[i].parse::<i64>().unwrap()
-        {
-            num_ -= 1;
-            break;
-        }
-    }
+    // for i in 1..splits_2.len()
+    // {
+    //     println!("end i {}", splits_2[i]);
+    //     if end > splits_2[i].parse::<i64>().unwrap()
+    //     {
+    //         num_ -= 1;
+    //         break;
+    //     }
+    // }
 
-    num_ += end - start - 1;
-    if num_ < 0{
-        num_ = 0;
-    }
+    // num_ += end - start - 1;
+    // if num_ < 0{
+    //     num_ = 0;
+    // }
 
-    // let start_a = start.0.parse::<i64>().unwrap();
-    // let start_b = start.1.parse::<i64>().unwrap();
-    // let end_a = end.0.parse::<i64>().unwrap();
-    // let end_b = end.1.parse::<i64>().unwrap();
+    // let start = splits_1[0].parse::<i64>().unwrap();
+    // let end = splits_2[0].parse::<i64>().unwrap();
+    let start_a = splits_1[0].parse::<i64>().unwrap();
+    let start_b = splits_1[1].parse::<i64>().unwrap();
+    let end_a = splits_2[0].parse::<i64>().unwrap();
+    let end_b = splits_2[1].parse::<i64>().unwrap();
 
-    // print!("{} {} - ", start_a, start_b);
-    // println!("{} {}", end_a, end_b);
+    print!("{} {} - ", start_a, start_b);
+    println!("{} {}", end_a, end_b);
     // let mut first = 0;
     
-    // if start_a >= start_b{
-    //     // first instance = start_a start_a e.g. 21 gives 22
-    //     *first = start_a;
-    //     num_ += 1;
-    // }
-    // else {
-    //     // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
-    //     *first = start_a as i64 + 1;
-    // }
+    if start_a >= start_b{
+        // first instance = start_a start_a e.g. 21 gives 22
+        *first = start_a;
+        num_ += 1;
+    }
+    else {
+        // first instance  = start_a + 1  start_a + 1 e.g. 23 gives 33
+        *first = start_a as i64 + 1;
+    }
 
-    // if end_a <= end_b{
-    //     num_ += 1;
-    // }
+    if end_a <= end_b{
+        num_ += 1;
+    }
 
-    // num_ += end_a - start_a - 1;
+    num_ += end_a - start_a - 1;
     return num_;
 }
 
