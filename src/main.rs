@@ -1,5 +1,6 @@
 use std::fs;
 mod day2;
+mod day3;
 
 fn day1()
 {
@@ -50,5 +51,5 @@ fn day1()
 
  
 fn main() {
-    day2::part1();
+    day3::solution::part1();
 }
