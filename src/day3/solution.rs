@@ -1,5 +1,4 @@
-use core::num;
-use std::{fs, io::empty};
+use std::fs;
 
 pub fn part1()
 {
@@ -14,10 +13,12 @@ pub fn part1()
     let split = file.split('\n');
     for line in split{
         println!("{}", line);
-        let vals = line.splitn(line.len()+1, "");   // This populates first index as empty
-        
-        let mut val_a = 0;
+        let vals: std::str::SplitN<'_, &str> = line.trim().splitn(line.len()+1, "");   // This populates first index as empty
+        // let a = [1, 2, 3];
+        let mut max = 0;
+        let mut max_index = 0;
         let mut index= 0;
+        // let t_vals = vals.clone();
         // let mut maxes: Vec<(i8, usize)> = vec![];
 
         // find the maximum value
@@ -27,21 +28,28 @@ pub fn part1()
             {
                 index+=1;
                 let number = val.parse::<i8>().expect("Number plz");
-                if number > val_a && line.len() - index >= final_len -1 
+                if number > max && line.len() - index >= final_len
                 {
-                    val_a = number;
+                    max_index = index;
+                    max = number;
                 }
             }
         }
-        println!("Val a: {}", val_a);
+        println!("Val a: {} idx: {}", max, max_index);
 
-        // find each index of max value instances
-        
-        // for max_val in maxes
+        let mut max_2 = 0;
+
+        // check for max number after first max
+        // for val in vals.into_iter().skip(max_index)
         // {
-        //     println!("val: {} idx:{}", max_val.0, max_val.1);
+        //     println!("val: {}", val);
+        //     let number = val.parse::<i8>().expect("Number plz");
+        //     if number > max_2
+        //     {
+        //         max_2 = number;
+        //     }
         // }
-
+        println!("max2: {}", max_2);
 
 
 
@@ -50,9 +58,6 @@ pub fn part1()
     // Want to find the pair of numbers that makes largest value
     // Iterate through the line, keep track of max
     // if val == 9 look for the next largest value
-    // want to check all instances of max
-    // eg 11194111981
-    // only finding first instance will miss 98
 
 
 
