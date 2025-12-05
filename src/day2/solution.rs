@@ -4,7 +4,7 @@ use std::collections::HashSet;
 
 pub fn part1() {
     // let data_path = "src/testdata2.txt";
-    let data_path = "src/data2.txt";
+    let data_path = "src/day2/data.txt";
     let file = fs::read_to_string(data_path)
         .expect("Should have been able to read the file");
 
