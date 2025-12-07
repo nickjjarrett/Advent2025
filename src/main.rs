@@ -1,8 +1,8 @@
 
-mod day5;
+mod day6;
  
 fn main() {
-    // let path = "src/day5/testdata.txt";
-    let path = "src/day5/data.txt";
-    day5::solution::part1(path);
+    // let path = "src/day6/testdata.txt";
+    let path = "src/day6/data.txt";
+    day6::solution::part1(path);
 }
