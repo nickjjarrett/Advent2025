@@ -31,20 +31,24 @@ pub fn part1(path: &str)
 
     let mut beams: Vec<usize> = vec![start_index];
 
-    let mut total = 0;
+    let mut total: usize = 0;
+    let mut multi = 1;
 
     for row in data
     {
-        total += check_below(&mut beams, row);
+        total += check_below(&mut beams, row, &mut multi);
         // println!("Beams:");
-        for i in &beams
-        {
+        // for i in &beams
+        // {
             // print!("{} ",i);
-        }
+        // }
         // println!();
     }
 
     println!("Total: {}", total);
+    println!("multi: {}", multi);
+
+    // it is not (total - 1)*2
 
     // println!("Silly: {}", silly_test(start_index, 0, &data));
 
@@ -53,7 +57,7 @@ pub fn part1(path: &str)
 
 
 
-fn check_below( beams: &mut Vec<usize>, data: Vec<char>) -> usize
+fn check_below( beams: &mut Vec<usize>, data: Vec<char>, multi_val: &mut usize) -> usize
 {
     let mut val = 0;
     let mut new_beams: Vec<usize> = vec![];
@@ -65,11 +69,12 @@ fn check_below( beams: &mut Vec<usize>, data: Vec<char>) -> usize
         {
             // let instances = beams.iter().filter(|x| *x == &i).count();
             val += 1;
+            *multi_val += 1;
             new_beams.push(i + 1);
             new_beams.push(i - 1);
             old_beams.push(i);
             // Check beams for this index
-            // println!("{}", i);
+            println!("{}", multi_val);
         }
     }
 
