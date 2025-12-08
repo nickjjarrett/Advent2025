@@ -131,7 +131,5 @@ fn consolidate_ranges(ranges: Vec<(usize, usize)>) -> Vec<(usize, usize)>
         }
     }
 
-    // consolidated.sort();
-
     return consolidated;
 }
