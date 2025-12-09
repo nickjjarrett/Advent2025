@@ -32,11 +32,10 @@ pub fn part1(path: &str)
     let mut beams: Vec<usize> = vec![start_index];
 
     let mut total: usize = 0;
-    let mut multi = 1;
 
-    for row in data
+    for row in data.clone()     // Yuck
     {
-        total += check_below(&mut beams, row, &mut multi);
+        total += check_below(&mut beams, row);
         // println!("Beams:");
         // for i in &beams
         // {
@@ -46,6 +45,11 @@ pub fn part1(path: &str)
     }
 
     println!("Total: {}", total);
+
+
+
+    let mut multi = part2(&data, start_index);
+
     println!("multi: {}", multi);
 
     // it is not (total - 1)*2
@@ -57,7 +61,7 @@ pub fn part1(path: &str)
 
 
 
-fn check_below( beams: &mut Vec<usize>, data: Vec<char>, multi_val: &mut usize) -> usize
+fn check_below( beams: &mut Vec<usize>, data: Vec<char>) -> usize
 {
     let mut val = 0;
     let mut new_beams: Vec<usize> = vec![];
@@ -69,12 +73,12 @@ fn check_below( beams: &mut Vec<usize>, data: Vec<char>, multi_val: &mut usize) 
         {
             // let instances = beams.iter().filter(|x| *x == &i).count();
             val += 1;
-            *multi_val += 1;
+            // *multi_val += 1;
             new_beams.push(i + 1);
             new_beams.push(i - 1);
             old_beams.push(i);
             // Check beams for this index
-            println!("{}", multi_val);
+            // println!("{}", multi_val);
         }
     }
 
@@ -101,6 +105,38 @@ fn check_below( beams: &mut Vec<usize>, data: Vec<char>, multi_val: &mut usize) 
 
     return val;
 }
+
+
+
+
+fn part2(data: &Vec<Vec<char>>, start_data: usize) -> i64
+{
+    let mut timebeams = vec![0; data.len()];
+
+    timebeams[start_data] += 1;
+
+    for line in data
+    {
+        for (i, thing) in line.iter().enumerate()
+        {
+            if *thing == '^'
+            {
+                timebeams[i-1] += timebeams[i];
+                timebeams[i+1] += timebeams[i];
+
+                timebeams[i] -= timebeams[i];
+            }
+        }
+    }
+
+    let mut total = 0;
+    for beam in timebeams{
+        total += beam;
+    }
+
+    return total;
+}
+
 
 
 
