@@ -53,28 +53,25 @@ pub fn part1(path: &str)
 
     let mut circuits: Vec<Vec<usize>> = vec![];
 
-    let num = 1000;
+    // let num = 1000;
     // let num= 10;
+    // let mut firs_set = distances[0..num].iter().collect::<Vec<_>>();
 
-    let mut firs_set = distances[0..num].iter().collect::<Vec<_>>();
-    // let mut firs_set = distances;
+    let mut firs_set = distances;
 
     firs_set.reverse();
 
+    println!("{:?}", firs_set);
+
     while firs_set.len() > 0
     {
-        if firs_set.len() == 0
-        {
-            println!("We got them all");
-            break;
-        }
+        
         let pair = firs_set.pop().unwrap();
         // println!("New point: {:?}", pair);
         let point_1 = pair.1.0;
         let point_2 = pair.1.1;
 
         let mut new = true;
-
 
         let mut num = 0;
         let mut circuit_index: (usize, usize) = (0,0);
@@ -143,28 +140,28 @@ pub fn part1(path: &str)
             circuits.push(vec![point_1, point_2]);
         }
 
-        // Consolidate existing lists
-        
+        if circuits[0].len() == data.len()
+        {
+            println!("We got them all");
+
+            println!("Total {}", data[pair.1.0].0*data[pair.1.1].0);
+            // println!("Total: {}", point_1*point_2);
+            break;
+        }
+
 
     }
 
-    circuits.sort_by_key(|v| v.len() );
-    // print!("\n\n\n\n\n");
-    // circuits[0].sort();
-    // println!("{:?}", circuits);
+    // circuits.sort_by_key(|v| v.len() );
+    // // print!("\n\n\n\n\n");
+    // // circuits[0].sort();
+    // // println!("{:?}", circuits);
 
-    let a = circuits.pop().unwrap().len();
-    let b = circuits.pop().unwrap().len();
-    let c = circuits.pop().unwrap().len();
+    // let a = circuits.pop().unwrap().len();
+    // let b = circuits.pop().unwrap().len();
+    // let c = circuits.pop().unwrap().len();
 
-    println!("Total: {}", a*b*c);
-
-
-    // for i in firs_set
-    // {
-    //     println!("{:?}", i)
-    // }
-
+    // println!("Total: {}", a*b*c);
 }
 
 
