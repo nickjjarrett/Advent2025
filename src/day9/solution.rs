@@ -45,3 +45,34 @@ fn calc_area(a_coord: (i64, i64), b_coord: (i64, i64)) -> i64
 {
     ((a_coord.0 - b_coord.0).abs() + 1) * ((a_coord.1 - b_coord.1).abs() + 1)
 }
+
+
+// Part 2
+//
+// Tiles that are adjacent in your list will always be on either the same row or the same column.
+//
+//
+// .............. 1
+// .......#XXX#.. 2 
+// .......XXXXX.. 3
+// ..#XXXX#XXXX.. 4
+// ..XXXXXXXXXX.. 5
+// ..#XXXXXX#XX.. 6
+// .........XXX.. 7
+// .........#X#.. 8
+// .............. 9
+// 123456789abcde
+//
+// Find the largest internal rectangle
+// the rectangle can't have and red squares internally
+// the rectangle can have red squares on the perimeter
+// an example of bad perimeter squares is (3,6) to (c,8)
+// 
+// When hitting a red square on the perimeter
+//   if the connecting square takes the direction within/across rectangle, then it's bad
+//   e.g. (3,6) to (c,8) at (a,8)
+//   if the connecting square takes direction away from rectangle, then it's okay 
+//   e.g. (3,4) to (a,6) at (8,4)
+
+ 
+// 
